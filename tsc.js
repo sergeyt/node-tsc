@@ -5,7 +5,8 @@
 		_ = require('lodash');
 
 	// read lines of the tsc.js
-	var lines = readlines(path.join(__dirname, '/node_modules/typescript/bin/tsc.js'));
+	var tscjs = require.resolve("typescript").replace(/typescript\.js$/, 'tsc.js');
+	var lines = readlines(tscjs);
 
 	// comment last lines to avoid autorun:
 	// var batch = new TypeScript.BatchCompiler(TypeScript.IO);
