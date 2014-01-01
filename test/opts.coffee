@@ -28,7 +28,8 @@ describe 'options normalizer', ->
 		it 'should handle string options', ->
 			[
 				'module=amd',
-				'target=ES5'
+				'target=ES5',
+				'out=test'
 			].forEach (opt) ->
 				p = opt.split '='
 				expect(p.length).to.be(2)

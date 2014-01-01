@@ -7,6 +7,7 @@ module.exports = (function(){
 	//   f - means flag option
 	//   s - means string option
 	var schemaObj = {
+		out: 's', // Specify path to output file
 		module: 's', // Specify module code generation: 'commonjs' or 'amd'
 		target: 's', // Specify ECMAScript target version: 'ES3' (default), or 'ES5'
 		noImplicitAny: 'f', // Warn on expressions and declarations with an implied 'any' type.
