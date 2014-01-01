@@ -1,13 +1,13 @@
 var TypeScript = require('./tsc.js'),
 	path = require('path'),
-	_ = require('lodash');
+	_ = require('lodash'),
+	normalizeOptions = require('./opts.js');
 
 module.exports = TypeScript;
 
 module.exports.compile = function(files, args, onError) {
 
-	// TODO support args as hash object
-	var opts = typeof args == "string" ? args.split(' ') : args || [];
+	var opts = normalizeOptions(args);
 	opts.push('--nolib');
 	opts = opts.concat(files);
 	opts.push(path.resolve(__dirname, 'node_modules/typescript/bin/lib.d.ts'));
