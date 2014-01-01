@@ -1,7 +1,8 @@
 var TypeScript = require('./tsc.js'),
 	path = require('path'),
 	_ = require('lodash'),
-	normalizeOptions = require('./opts.js');
+	normalizeOptions = require('./opts.js'),
+	tsdir = path.dirname(require.resolve('typescript'));
 
 module.exports = TypeScript;
 
@@ -10,7 +11,7 @@ module.exports.compile = function(files, args, onError) {
 	var opts = normalizeOptions(args);
 	opts.push('--nolib');
 	opts = opts.concat(files);
-	opts.push(path.resolve(__dirname, 'node_modules/typescript/bin/lib.d.ts'));
+	opts.push(path.join(tsdir, 'lib.d.ts'));
 
 	var io = _.extend({}, TypeScript.IO, { arguments: opts });
 
