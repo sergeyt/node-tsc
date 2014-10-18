@@ -1,7 +1,4 @@
-interface Person {
-    firstname: string;
-    lastname: string;
-}
+/// <reference path="person.ts"/>
 
 function greeter(person : Person) {
     return "Hello, " + person.firstname + " " + person.lastname;

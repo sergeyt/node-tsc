@@ -1,6 +1,10 @@
+var path = require('path');
 var tsc = require('../index.js');
+var files = ['person.ts', 'hello.ts'].map(function(name) {
+  return path.join(__dirname, name);
+});
 
-tsc.compile([__dirname + '/hello.ts'],
+tsc.compile(files,
 	[
 		'--sourcemap',
 		'--target',
