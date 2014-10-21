@@ -5,5 +5,8 @@ function greeter(person : Person) {
 }
 
 var user = {firstname: "Jane", lastname: "User"};
+var n : number = -10
 
 console.log(greeter(user));
+console.log(Math.abs(n))
+
