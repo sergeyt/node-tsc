@@ -1,19 +1,20 @@
-var TypeScript = require('./tsc.js'),
-	path = require('path'),
-	_ = require('lodash'),
-	normalizeOptions = require('./opts.js'),
-	tsdir = path.dirname(require.resolve('typescript'));
+var fs = require('fs');
+var path = require('path');
+var _ = require('lodash');
+var normalizeOptions = require('./opts.js');
 
-module.exports = TypeScript;
+module.exports.compile = function(opts, onError) {
 
-module.exports.compile = function(files, args, onError) {
+	var compilerPath = opts.compiler && fs.existsSync(opts.compiler) ? opts.compiler : tscPath();
+	var TypeScript = require('./tsc.js')(compilerPath);
+	var tsdir = path.dirname(compilerPath);
 
-	var opts = normalizeOptions(args);
-	opts.push('--nolib');
-	opts = opts.concat(files);
-	opts.push(path.join(tsdir, 'lib.d.ts'));
+	var args = normalizeOptions(opts.args);
+	args.push('--nolib');
+	args = args.concat(opts.files);
+	args.push(path.join(tsdir, 'lib.d.ts'));
 
-	var io = _.extend({}, TypeScript.IO, { arguments: opts });
+	var io = _.extend({}, TypeScript.IO, { arguments: args });
 
 	var exitCode = 0;
 	io.quit = function(code) {
@@ -40,3 +41,11 @@ module.exports.compile = function(files, args, onError) {
 
 	return exitCode;
 };
+
+// default tsc.js path
+function tscPath() {
+	var ts = require.resolve("typescript");
+	// console.log('typescript module path: %s', ts);
+	var dir = path.dirname(ts);
+	return path.join(dir, 'tsc.js');
+}

@@ -4,12 +4,16 @@ var files = ['person.ts', 'hello.ts'].map(function(name) {
   return path.join(__dirname, name);
 });
 
-tsc.compile(files,
-	[
+function logerr(msg) {
+	console.error(msg);
+	return false;
+}
+
+tsc.compile({
+	files: files,
+	args: [
 		'--sourcemap',
 		'--target',
 		'ES5'
-	], function(msg) {
-		console.error(msg);
-		return false;
-	});
+	]
+}, logerr);

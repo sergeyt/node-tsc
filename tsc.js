@@ -1,12 +1,12 @@
-(function(){
+// loads TypeScript compiler
+module.exports = function(compilerPath) {
 	var path = require('path'),
 		vm = require('vm'),
 		readlines = require('./readlines.js'),
 		_ = require('lodash');
 
 	// read lines of the tsc.js
-	var tscjs = require.resolve("typescript").replace(/typescript\.js$/, 'tsc.js');
-	var lines = readlines(tscjs);
+	var lines = readlines(compilerPath);
 
 	// comment last lines to avoid autorun:
 	// var batch = new TypeScript.BatchCompiler(TypeScript.IO);
@@ -18,7 +18,7 @@
 
 	lines[i] = '// ' + lines[i];
 	// comment possible 'batchCompile' call
-	if ((/batchCompile\s*\(\s*\)/).test(lines[i + 1])){
+	if ((/batchCompile\s*\(\s*\)/).test(lines[i + 1])) {
 		lines[i+1] = '// ' + lines[i+1];
 	}
 
@@ -41,5 +41,5 @@
 	sandbox.root = root;
 
 	// run script to expose typescript compiler API
-	module.exports = vm.runInNewContext(script, sandbox, { filename: filename });
-})();
+	return vm.runInNewContext(script, sandbox, { filename: filename });
+};
