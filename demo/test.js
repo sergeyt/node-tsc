@@ -10,6 +10,7 @@ function logerr(msg) {
 }
 
 tsc.compile({
+	compiler: path.join(__dirname, '../node_modules/typescript/bin/tsc.js'),
 	files: files,
 	args: [
 		'--sourcemap',
