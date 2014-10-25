@@ -2,11 +2,12 @@ var fs = require('fs');
 var path = require('path');
 var _ = require('lodash');
 var normalizeOptions = require('./opts.js');
+var loadtsc = require('./loadtsc.js');
 
 module.exports.compile = function(opts, onError) {
 
 	var compilerPath = opts.compiler && fs.existsSync(opts.compiler) ? opts.compiler : tscPath();
-	var TypeScript = require('./tsc.js')(compilerPath);
+	var TypeScript = loadtsc(compilerPath);
 	var tsdir = path.dirname(compilerPath);
 
 	var args = normalizeOptions(opts.args);
