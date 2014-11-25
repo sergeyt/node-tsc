@@ -7,20 +7,14 @@ var loadtsc = require('./loadtsc.js');
 module.exports.compile = function(opts, onError) {
 
 	var compilerPath = opts.compiler && fs.existsSync(opts.compiler) ? opts.compiler : tscPath();
-	var TypeScript = loadtsc(compilerPath);
+	var ts = loadtsc(compilerPath);
 	var tsdir = path.dirname(compilerPath);
+	var exitCode = 0;
 
 	var args = normalizeOptions(opts.args);
 	args.push('--nolib');
 	args = args.concat(opts.files);
 	args.push(path.join(tsdir, 'lib.d.ts'));
-
-	var io = _.extend({}, TypeScript.IO, { arguments: args });
-
-	var exitCode = 0;
-	io.quit = function(code) {
-		exitCode = code;
-	};
 
 	function wrap(fn) {
 		var original = fn;
@@ -32,13 +26,33 @@ module.exports.compile = function(opts, onError) {
 		};
 	}
 
-	if (onError) {
-		io.stderr.Write = wrap(io.stderr.Write);
-		io.stderr.WriteLine = wrap(io.stderr.WriteLine);
-	}
+	if (typeof ts.BatchCompiler !== "undefined") { // typescript <= 1.0
+		var io = _.extend({}, ts.IO, { arguments: args });
 
-	var batch = new TypeScript.BatchCompiler(io);
-	batch.batchCompile();
+		io.quit = function(code) {
+			exitCode = code;
+		};
+
+		if (onError) {
+			io.stderr.Write = wrap(io.stderr.Write);
+			io.stderr.WriteLine = wrap(io.stderr.WriteLine);
+		}
+
+		var batch = new ts.BatchCompiler(io);
+		batch.batchCompile();
+	} else {
+		ts.sys.args = args;
+
+		ts.sys.exit = function(code) {
+			exitCode = code;
+		};
+
+		if (onError) {
+			ts.sys.write = wrap(ts.sys.write);
+		}
+
+		ts.executeCommandLine(ts.sys.args);
+	}
 
 	return exitCode;
 };

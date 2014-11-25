@@ -1,6 +1,6 @@
+var fs = require('fs');
 var path = require('path');
 var vm = require('vm');
-var readlines = require('./readlines.js');
 var _ = require('lodash');
 var iswin = require('iswin')();
 
@@ -14,20 +14,32 @@ function create_sandbox(compilerPath) {
 	// var batch = new TypeScript.BatchCompiler(TypeScript.IO);
 	// batch.batchCompile();
 
-	var i = _.findLastIndex(lines, function(l){
+	var i = _.findLastIndex(lines, function(l) {
 		return (/new\s*(TypeScript\.)?\s*BatchCompiler\((TypeScript\.)?IO\)/).test(l);
 	});
 
-	lines[i] = '// ' + lines[i];
-	// comment possible 'batchCompile' call
-	if ((/batchCompile\s*\(\s*\)/).test(lines[i + 1])) {
-		lines[i+1] = '// ' + lines[i+1];
+	var tsexport;
+
+	if (i >= 0) { // typescript <= 1.0
+		lines[i] = '// ' + lines[i];
+		// comment possible 'batchCompile' call
+		if ((/batchCompile\s*\(\s*\)/).test(lines[i + 1])) {
+			lines[i+1] = '// ' + lines[i+1];
+		}
+		tsexport = ['return TypeScript;'];
+	} else {
+		i = _.findLastIndex(lines, function(l) {
+			return (/ts\s*\.\s*executeCommandLine\s*\(\s*sys\s*\.\s*args\)\s*;/).test(l);
+		});
+		lines[i] = '// ' + lines[i];
+		tsexport = ['ts.sys = sys;', 'return ts;'];
 	}
 
 	// build a wrapping closure
 	var script = ['module.exports = (function() {']
 		.concat(lines)
-		.concat(['return TypeScript;', '})();'])
+		.concat(tsexport)
+		.concat(['})();'])
 		.join('\n');
 
 	// prepare sandbox to run script
@@ -44,6 +56,12 @@ function create_sandbox(compilerPath) {
 
 	// run script to expose typescript compiler API
 	return vm.runInNewContext(script, sandbox, { filename: filename });
+}
+
+// reads lines of given file
+function readlines(path) {
+	var text = fs.readFileSync(path, 'utf8');
+	return text.split(/\r?\n/);
 }
 
 var compilers = {}; // sanbox caches to avoid errors
