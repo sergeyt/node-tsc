@@ -8,6 +8,11 @@ module.exports.compile = function(opts, onError) {
 
 	var compilerPath = opts.compiler && fs.existsSync(opts.compiler) ? opts.compiler : tscPath();
 	var ts = loadtsc(compilerPath);
+	if (!ts) {
+		onError("Unable to sandbox typescript compiler. Try to use supported version <= 1.4.");
+		return;
+	}
+
 	var tsdir = path.dirname(compilerPath);
 	var exitCode = 0;
 

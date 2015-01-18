@@ -27,12 +27,34 @@ function create_sandbox(compilerPath) {
 			lines[i+1] = '// ' + lines[i+1];
 		}
 		tsexport = ['return TypeScript;'];
-	} else {
-		i = _.findLastIndex(lines, function(l) {
-			return (/ts\s*\.\s*executeCommandLine\s*\(\s*sys\s*\.\s*args\)\s*;/).test(l);
-		});
-		lines[i] = '// ' + lines[i];
-		tsexport = ['ts.sys = sys;', 'return ts;'];
+	} else { // typescript > 1.0
+		var probes = [
+			// <= 1.3
+			{
+				re: /ts\s*\.\s*executeCommandLine\s*\(\s*sys\s*\.\s*args\)\s*;/,
+				export: ['ts.sys = sys;', 'return ts;']
+			},
+			// >= 1.4
+			{
+				re: /ts\s*\.\s*executeCommandLine\s*\(\s*ts\s*\.\s*sys\s*\.\s*args\)\s*;/,
+				export: ['return ts;']
+			},
+		];
+		i = _.reduce(probes, function(i, p) {
+			if (i >= 0) return i;
+			var re = p.re;
+			i = _.findLastIndex(lines, function(l) {
+				return re.test(l);
+			});
+			if (i >= 0) {
+				lines[i] = '// ' + lines[i];
+				tsexport = p.export;
+			}
+			return i;
+		}, -1);
+		if (i < 0) {
+			return null;
+		}
 	}
 
 	// build a wrapping closure
