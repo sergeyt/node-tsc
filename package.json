@@ -16,21 +16,21 @@
     "Sergey Todyshev <stodyshev@gmail.com>"
   ],
   "dependencies": {
-    "lodash": "~2.4.1",
+    "lodash": "~3.5.0",
     "iswin": "0.0.2"
   },
   "devDependencies": {
     "typescript": "~1.4",
     "grunt": "~0.4",
-    "grunt-contrib-jshint": "~0.10",
+    "grunt-contrib-jshint": "~0.11",
     "grunt-npm": "~0.0.2",
-    "grunt-bump": "~0.0.14",
+    "grunt-bump": "~0.3.0",
     "grunt-auto-release": "~0.0.6",
     "grunt-coffeelint": "0.0.13",
     "grunt-cli": "~0.1",
     "grunt-simple-mocha": "~0.4",
     "expect.js": "~0.3",
-    "coffee-script": "~1.8"
+    "coffee-script": "~1.9"
   },
   "scripts": {
     "lint": "grunt lint",
