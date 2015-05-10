@@ -1,6 +1,6 @@
 {
   "name": "node-tsc",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Exposes command line typescript compiler as nodejs module.",
   "license": "MIT",
   "main": "index.js",
