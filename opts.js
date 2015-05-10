@@ -13,7 +13,10 @@ module.exports = (function(){
 		noImplicitAny: 'f', // Warn on expressions and declarations with an implied 'any' type.
 		noResolve: 'f', // Skip resolution and preprocessing.
 		removeComments: 'f', // Do not emit comments to output.
-		sourcemap: ['f', 'sourceMap']
+		sourcemap: ['f', 'sourceMap'],
+		sourceRoot: 's', // Specify the location where debugger should locate TypeScript files instead of source locations.
+		mapRoot: 's', // Specify the location where debugger should locate map files instead of generated locations.
+		outDir: 's' // Redirect output structure to the directory.
 	};
 
 	var schema = _.flatten(Object.keys(schemaObj).map(function(key){
