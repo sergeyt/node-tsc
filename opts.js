@@ -16,7 +16,8 @@ module.exports = (function(){
 		sourcemap: ['f', 'sourceMap'],
 		sourceRoot: 's', // Specify the location where debugger should locate TypeScript files instead of source locations.
 		mapRoot: 's', // Specify the location where debugger should locate map files instead of generated locations.
-		outDir: 's' // Redirect output structure to the directory.
+		outDir: 's', // Redirect output structure to the directory.
+		jsx: 's' // Specify JSX code generation: 'preserve' or 'react'
 	};
 
 	var schema = _.flatten(Object.keys(schemaObj).map(function(key){
