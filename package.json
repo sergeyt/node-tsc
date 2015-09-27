@@ -13,7 +13,8 @@
   ],
   "author": "Sergey Todyshev <stodyshev@gmail.com>",
   "contributors": [
-    "Sergey Todyshev <stodyshev@gmail.com>"
+    "Sergey Todyshev <stodyshev@gmail.com>",
+    "Andris Lapsa <alapsa@evolutiongaming.com>"
   ],
   "dependencies": {
     "lodash": "~3.10.1",
