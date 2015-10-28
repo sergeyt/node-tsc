@@ -11,6 +11,8 @@ module.exports = (function(){
 		module: 's', // Specify module code generation: 'commonjs' or 'amd'
 		target: 's', // Specify ECMAScript target version: 'ES3' (default), or 'ES5'
 		noImplicitAny: 'f', // Warn on expressions and declarations with an implied 'any' type.
+		experimentalDecorators: 'f', // Decorators allowed
+		emitDecoratorMetadata: 'f', // Emit design-type metadata for decorated declarations in source. See issue #2577 for details.
 		noResolve: 'f', // Skip resolution and preprocessing.
 		removeComments: 'f', // Do not emit comments to output.
 		sourcemap: ['f', 'sourceMap'],
