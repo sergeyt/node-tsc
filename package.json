@@ -14,7 +14,8 @@
   "author": "Sergey Todyshev <stodyshev@gmail.com>",
   "contributors": [
     "Sergey Todyshev <stodyshev@gmail.com>",
-    "Andris Lapsa <alapsa@evolutiongaming.com>"
+    "Andris Lapsa <alapsa@evolutiongaming.com>",
+    "Paul Souche <souche.p@sfeir.com>"
   ],
   "dependencies": {
     "lodash": "~3.10.1",
